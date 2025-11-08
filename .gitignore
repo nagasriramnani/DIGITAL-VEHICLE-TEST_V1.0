@@ -1,0 +1,112 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+*.env
+!.env.example
+!docker.env.example
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Data files (large generated files)
+src/data/test_scenarios.json
+
+# Docker
+*.log
+
+# Neo4j
+neo4j-data/
+neo4j-logs/
+
+# ML Models (if you download large models locally)
+models/
+*.bin
+*.safetensors
+!requirements.txt
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Reports (generated)
+reports/*.json
+reports/*.md
+!reports/.gitkeep
+
+# Simulation exports (generated)
+exports/
+*.py.generated
+*.xml.generated
+*.sumocfg
+
+# CARLA Installation (do not push)
+CarlaUE4/
+CarlaUE4.exe
+Co-Simulation/
+Engine/
+HDMaps/
+PythonAPI/
+Makefile
+CHANGELOG
+LICENSE
+README
+Import/
+Unreal/
+manifest.json
+

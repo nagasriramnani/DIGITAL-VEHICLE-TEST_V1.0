@@ -1,0 +1,327 @@
+@prefix : <http://nissan-ntce.cranfield.ac.uk/vta/shapes#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix vta: <http://nissan-ntce.cranfield.ac.uk/vta/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+#################################################################
+#    SHACL Shapes for VTA Ontology Validation
+#################################################################
+
+:VehicleShape
+    a sh:NodeShape ;
+    sh:targetClass vta:Vehicle ;
+    sh:property [
+        sh:path vta:hasComponent ;
+        sh:minCount 1 ;
+        sh:class vta:Component ;
+        sh:message "A vehicle must have at least one component" ;
+    ] ;
+    sh:property [
+        sh:path vta:onPlatform ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class vta:Platform ;
+        sh:message "A vehicle must have exactly one platform" ;
+    ] ;
+    sh:property [
+        sh:path vta:modelId ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A vehicle must have exactly one model ID" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A vehicle must have a label" ;
+    ] .
+
+:ComponentShape
+    a sh:NodeShape ;
+    sh:targetClass vta:Component ;
+    sh:property [
+        sh:path vta:belongsToSystem ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class vta:VehicleSystem ;
+        sh:message "A component must belong to exactly one vehicle system" ;
+    ] ;
+    sh:property [
+        sh:path vta:criticality ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("critical" "high" "medium" "low") ;
+        sh:message "Component criticality must be one of: critical, high, medium, low" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A component must have a label" ;
+    ] .
+
+:TestScenarioShape
+    a sh:NodeShape ;
+    sh:targetClass vta:TestScenario ;
+    sh:property [
+        sh:path vta:testType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("performance" "durability" "safety" "regulatory" "adas" "emissions") ;
+        sh:message "Test type must be one of: performance, durability, safety, regulatory, adas, emissions" ;
+    ] ;
+    sh:property [
+        sh:path vta:complexityScore ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+        sh:maxInclusive 10 ;
+        sh:message "Complexity score must be an integer between 1 and 10" ;
+    ] ;
+    sh:property [
+        sh:path vta:riskLevel ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("low" "medium" "high" "critical") ;
+        sh:message "Risk level must be one of: low, medium, high, critical" ;
+    ] ;
+    sh:property [
+        sh:path vta:estimatedDuration ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:float ;
+        sh:minInclusive 0.0 ;
+        sh:message "Estimated duration must be a positive number" ;
+    ] ;
+    sh:property [
+        sh:path vta:estimatedCost ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:float ;
+        sh:minInclusive 0.0 ;
+        sh:message "Estimated cost must be a positive number" ;
+    ] ;
+    sh:property [
+        sh:path vta:certificationRequired ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:message "Certification required must be a boolean" ;
+    ] ;
+    sh:property [
+        sh:path vta:isType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class vta:TestType ;
+        sh:message "A test scenario must have exactly one test type" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A test scenario must have a label (test name)" ;
+    ] .
+
+:PlatformShape
+    a sh:NodeShape ;
+    sh:targetClass vta:Platform ;
+    sh:property [
+        sh:path vta:platformType ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("EV" "HEV" "ICE") ;
+        sh:message "Platform type must be one of: EV, HEV, ICE" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A platform must have a label" ;
+    ] .
+
+:VehicleSystemShape
+    a sh:NodeShape ;
+    sh:targetClass vta:VehicleSystem ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A vehicle system must have a label" ;
+    ] .
+
+:RegulatoryStandardShape
+    a sh:NodeShape ;
+    sh:targetClass vta:RegulatoryStandard ;
+    sh:property [
+        sh:path vta:category ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ("Safety" "Emissions" "Performance" "Technical" "General") ;
+        sh:message "Standard category must be one of: Safety, Emissions, Performance, Technical, General" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A regulatory standard must have a label" ;
+    ] .
+
+:TestTypeShape
+    a sh:NodeShape ;
+    sh:targetClass vta:TestType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A test type must have a label" ;
+    ] .
+
+:FacilityShape
+    a sh:NodeShape ;
+    sh:targetClass vta:Facility ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "A facility must have a label" ;
+    ] .
+
+:HistoricalTestShape
+    a sh:NodeShape ;
+    sh:targetClass vta:HistoricalTest ;
+    sh:property [
+        sh:path vta:passed ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:message "Historical test must have a passed/failed status" ;
+    ] ;
+    sh:property [
+        sh:path vta:executionDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message "Execution date must be a valid date" ;
+    ] ;
+    sh:property [
+        sh:path vta:fixHours ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:float ;
+        sh:minInclusive 0.0 ;
+        sh:message "Fix hours must be a positive number" ;
+    ] .
+
+#################################################################
+#    Relationship Constraints
+#################################################################
+
+:RequiresTestConstraint
+    a sh:NodeShape ;
+    sh:targetClass vta:Vehicle ;
+    sh:property [
+        sh:path vta:requiresTest ;
+        sh:class vta:TestScenario ;
+        sh:message "requiresTest must link to a TestScenario" ;
+    ] .
+
+:TestsComponentConstraint
+    a sh:NodeShape ;
+    sh:targetClass vta:TestScenario ;
+    sh:property [
+        sh:path vta:testsComponent ;
+        sh:class vta:Component ;
+        sh:message "testsComponent must link to a Component" ;
+    ] .
+
+:FollowsStandardConstraint
+    a sh:NodeShape ;
+    sh:targetClass vta:TestScenario ;
+    sh:property [
+        sh:path vta:followsStandard ;
+        sh:class vta:RegulatoryStandard ;
+        sh:message "followsStandard must link to a RegulatoryStandard" ;
+    ] .
+
+#################################################################
+#    Business Rules
+#################################################################
+
+:CriticalComponentMustHaveTests
+    a sh:NodeShape ;
+    sh:targetClass vta:Component ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Critical components must have at least one test scenario" ;
+        sh:prefixes [
+            sh:declare [
+                sh:prefix "vta" ;
+                sh:namespace "http://nissan-ntce.cranfield.ac.uk/vta/ontology#"^^xsd:anyURI ;
+            ]
+        ] ;
+        sh:select """
+            SELECT $this
+            WHERE {
+                $this vta:criticality "critical" .
+                FILTER NOT EXISTS {
+                    ?test vta:testsComponent $this .
+                }
+            }
+        """ ;
+    ] .
+
+:CertificationTestMustHaveStandard
+    a sh:NodeShape ;
+    sh:targetClass vta:TestScenario ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Tests requiring certification must follow at least one regulatory standard" ;
+        sh:prefixes [
+            sh:declare [
+                sh:prefix "vta" ;
+                sh:namespace "http://nissan-ntce.cranfield.ac.uk/vta/ontology#"^^xsd:anyURI ;
+            ]
+        ] ;
+        sh:select """
+            SELECT $this
+            WHERE {
+                $this vta:certificationRequired true .
+                FILTER NOT EXISTS {
+                    $this vta:followsStandard ?standard .
+                }
+            }
+        """ ;
+    ] .
+
+:HighRiskTestsMustBeCertified
+    a sh:NodeShape ;
+    sh:targetClass vta:TestScenario ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "High and critical risk tests should require certification" ;
+        sh:severity sh:Warning ;
+        sh:prefixes [
+            sh:declare [
+                sh:prefix "vta" ;
+                sh:namespace "http://nissan-ntce.cranfield.ac.uk/vta/ontology#"^^xsd:anyURI ;
+            ]
+        ] ;
+        sh:select """
+            SELECT $this
+            WHERE {
+                $this vta:riskLevel ?risk .
+                FILTER (?risk IN ("high", "critical"))
+                $this vta:certificationRequired false .
+            }
+        """ ;
+    ] .
+
+#################################################################
+#    End of SHACL Shapes
+#################################################################
+

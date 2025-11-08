@@ -1,0 +1,868 @@
+/* ============================================================================
+   Futuristic White Theme - Advanced CSS
+   Modern, minimalist, sci-fi inspired design
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* Color Palette */
+    --primary: #0066FF;
+    --primary-dark: #0052CC;
+    --primary-light: #3385FF;
+    --secondary: #00D4FF;
+    --accent: #7B2CBF;
+    --accent-light: #9D4EDD;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --error: #EF4444;
+    --info: #3B82F6;
+    
+    /* Neutrals */
+    --white: #FFFFFF;
+    --grey-50: #F9FAFB;
+    --grey-100: #F3F4F6;
+    --grey-200: #E5E7EB;
+    --grey-300: #D1D5DB;
+    --grey-400: #9CA3AF;
+    --grey-500: #6B7280;
+    --grey-600: #4B5563;
+    --grey-700: #374151;
+    --grey-800: #1F2937;
+    --grey-900: #111827;
+    
+    /* Text */
+    --text-primary: #1A1A1A;
+    --text-secondary: #6B7280;
+    --text-tertiary: #9CA3AF;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-blue: 0 10px 40px rgba(0, 102, 255, 0.2);
+    --shadow-cyan: 0 10px 40px rgba(0, 212, 255, 0.2);
+}
+
+/* ============================================================================
+   Base Styles
+   ============================================================================ */
+
+* {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.stApp {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F0F4F8 30%, #E8F0F5 60%, #F5F7FA 100%);
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+/* ============================================================================
+   Sidebar - Glass Morphism
+   ============================================================================ */
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.98) 0%, 
+        rgba(248, 250, 252, 0.95) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-right: 1px solid rgba(0, 102, 255, 0.1);
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.05);
+}
+
+[data-testid="stSidebar"] h1 {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+}
+
+/* ============================================================================
+   Navigation Menu
+   ============================================================================ */
+
+.stRadio [role="radiogroup"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stRadio label {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background: transparent;
+    color: var(--grey-700) !important; /* Dark gray for visibility */
+    font-weight: 500;
+}
+
+/* Ensure all text inside radio labels is visible */
+.stRadio label span {
+    color: var(--grey-700) !important;
+}
+
+.stRadio label:hover {
+    background: rgba(0, 102, 255, 0.05);
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.stRadio [role="radiogroup"] label:has(input:checked) {
+    background: linear-gradient(135deg, rgba(0, 102, 255, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+    color: var(--primary) !important;
+    font-weight: 600;
+    border-color: rgba(0, 102, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.15);
+}
+
+/* Ensure checked label text is visible */
+.stRadio [role="radiogroup"] label:has(input:checked) span {
+    color: var(--primary) !important;
+}
+
+.stRadio input[type="radio"] {
+    accent-color: var(--primary);
+}
+
+/* ============================================================================
+   Main Content Area
+   ============================================================================ */
+
+.main .block-container {
+    background: transparent;
+    padding: 2rem 3rem;
+    max-width: 1400px;
+}
+
+/* ============================================================================
+   Headers - Futuristic Gradient Text
+   ============================================================================ */
+
+h1, h2, h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Fallback for h1 if gradient doesn't work */
+h1:not([style*="gradient"]) {
+    color: var(--primary) !important;
+    -webkit-text-fill-color: var(--primary) !important;
+}
+
+h2 {
+    color: var(--primary) !important;
+    font-size: 1.875rem;
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+}
+
+h3 {
+    color: var(--text-primary) !important;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* All header elements should be visible */
+.stHeader, .stHeader h1, .stHeader h2, .stHeader h3 {
+    color: var(--text-primary) !important;
+}
+
+.main-header {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    position: relative;
+}
+
+.main-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: 2px;
+}
+
+/* ============================================================================
+   Metric Cards - Glass Cards with Hover Effects
+   ============================================================================ */
+
+[data-testid="stMetricContainer"] {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 102, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-testid="stMetricContainer"]:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-blue);
+    border-color: rgba(0, 102, 255, 0.3);
+}
+
+[data-testid="stMetricValue"] {
+    color: var(--primary) !important;
+    font-weight: 800;
+    font-size: 2rem;
+    line-height: 1.2;
+    margin: 0.5rem 0;
+}
+
+[data-testid="stMetricLabel"] {
+    color: var(--text-secondary) !important;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+}
+
+[data-testid="stMetricDelta"] {
+    font-weight: 600;
+}
+
+.metric-card-futuristic {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 102, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.metric-card-futuristic:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-blue);
+    border-color: rgba(0, 102, 255, 0.3);
+}
+
+/* ============================================================================
+   Buttons - Futuristic Gradient
+   ============================================================================ */
+
+.stButton > button {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-blue);
+    position: relative;
+    overflow: hidden;
+}
+
+.stButton > button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.stButton > button:hover::before {
+    left: 100%;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 102, 255, 0.4);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+}
+
+.stButton > button:active {
+    transform: translateY(0);
+}
+
+/* Secondary Button Style */
+.stButton > button[kind="secondary"] {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
+}
+
+.stButton > button[kind="secondary"]:hover {
+    box-shadow: 0 12px 30px rgba(123, 44, 191, 0.4);
+}
+
+/* ============================================================================
+   Input Fields - Modern Styling
+   ============================================================================ */
+
+.stSelectbox > div > div,
+.stTextInput > div > div > input,
+.stNumberInput > div > div > input,
+.stTextArea > div > div > textarea {
+    border: 2px solid rgba(0, 102, 255, 0.2);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.stSelectbox > div > div:focus,
+.stTextInput > div > div > input:focus,
+.stNumberInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+    outline: none;
+}
+
+.stSelectbox label,
+.stTextInput label,
+.stNumberInput label,
+.stTextArea label,
+.stSlider label {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ============================================================================
+   Multiselect - Chip Style
+   ============================================================================ */
+
+.stMultiSelect > div > div {
+    border: 2px solid rgba(0, 102, 255, 0.2);
+    border-radius: 10px;
+    min-height: 48px;
+}
+
+.stMultiSelect > div > div:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+}
+
+/* Selected items as chips */
+.stMultiSelect [data-baseweb="tag"] {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: var(--white);
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* ============================================================================
+   Sliders
+   ============================================================================ */
+
+.stSlider > div > div {
+    color: var(--primary);
+}
+
+.stSlider [data-baseweb="slider-track"] {
+    background: rgba(0, 102, 255, 0.2);
+    height: 6px;
+    border-radius: 3px;
+}
+
+.stSlider [data-baseweb="slider-thumb"] {
+    background: var(--primary);
+    border: 3px solid var(--white);
+    box-shadow: var(--shadow-md);
+    width: 20px;
+    height: 20px;
+}
+
+/* ============================================================================
+   Success/Info/Warning/Error Boxes
+   ============================================================================ */
+
+.stSuccess {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+    border-left: 4px solid var(--success);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.stInfo {
+    background: linear-gradient(135deg, rgba(0, 102, 255, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%);
+    border-left: 4px solid var(--info);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.stWarning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+    border-left: 4px solid var(--warning);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.stError {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+    border-left: 4px solid var(--error);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================================
+   Tables - Modern Card Style
+   ============================================================================ */
+
+.dataframe {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(0, 102, 255, 0.1);
+}
+
+.dataframe thead {
+    background: linear-gradient(135deg, rgba(0, 102, 255, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+}
+
+.dataframe th {
+    color: var(--primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    padding: 1rem;
+}
+
+.dataframe td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(0, 102, 255, 0.05);
+}
+
+.dataframe tr:hover {
+    background: rgba(0, 102, 255, 0.05);
+}
+
+/* ============================================================================
+   Charts - Plotly Container
+   ============================================================================ */
+
+.js-plotly-plot {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(0, 102, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.js-plotly-plot:hover {
+    box-shadow: var(--shadow-blue);
+    transform: translateY(-2px);
+}
+
+/* ============================================================================
+   Dividers
+   ============================================================================ */
+
+hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 102, 255, 0.3), transparent);
+    margin: 2rem 0;
+}
+
+/* ============================================================================
+   Expanders
+   ============================================================================ */
+
+.stExpander {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 102, 255, 0.1);
+    border-radius: 12px;
+    margin: 0.5rem 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.stExpander:hover {
+    border-color: rgba(0, 102, 255, 0.3);
+    box-shadow: var(--shadow);
+}
+
+/* ============================================================================
+   Spinner/Loading
+   ============================================================================ */
+
+.futuristic-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(0, 102, 255, 0.1);
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   Glass Card Component
+   ============================================================================ */
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-xl);
+    margin: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 102, 255, 0.15);
+}
+
+/* ============================================================================
+   Navigation Menu
+   ============================================================================ */
+
+.futuristic-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background: rgba(0, 102, 255, 0.05);
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.nav-item.nav-active {
+    background: linear-gradient(135deg, rgba(0, 102, 255, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+    color: var(--primary);
+    font-weight: 600;
+    border-left: 3px solid var(--primary);
+}
+
+.nav-icon {
+    font-size: 1.25rem;
+}
+
+.nav-label {
+    font-size: 0.95rem;
+}
+
+/* ============================================================================
+   Status Badge
+   ============================================================================ */
+
+.status-badge {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge-success {
+    background: var(--success);
+    color: var(--white);
+}
+
+.status-badge-warning {
+    background: var(--warning);
+    color: var(--white);
+}
+
+.status-badge-error {
+    background: var(--error);
+    color: var(--white);
+}
+
+.status-badge-info {
+    background: var(--info);
+    color: var(--white);
+}
+
+/* ============================================================================
+   Responsive Design
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .main .block-container {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .main-header {
+        font-size: 2.5rem;
+    }
+}
+
+/* ============================================================================
+   Animations
+   ============================================================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.4s ease-out;
+}
+
+/* ============================================================================
+   Scrollbar Styling
+   ============================================================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--grey-100);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+}
+
+/* ============================================================================
+   TEXT VISIBILITY FIXES - Ensure ALL text is readable
+   ============================================================================ */
+
+/* All Streamlit text elements - Force dark text */
+.stMarkdown, .stMarkdown p, .stMarkdown div, .stMarkdown span {
+    color: var(--text-primary) !important;
+}
+
+.stText, .stWrite {
+    color: var(--text-primary) !important;
+}
+
+/* Subheaders and titles - Make them dark */
+.stSubheader {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+/* All paragraph text */
+p {
+    color: var(--text-primary) !important;
+}
+
+/* Footer text - Make it darker */
+footer, .footer, [class*="footer"] {
+    color: var(--grey-700) !important;
+}
+
+/* Chart titles and section headers */
+[class*="title"], [class*="Title"], [class*="header"], [class*="Header"] {
+    color: var(--text-primary) !important;
+}
+
+/* Sidebar text - Ensure all sidebar text is visible */
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] div,
+[data-testid="stSidebar"] span,
+[data-testid="stSidebar"] label {
+    color: var(--grey-700) !important;
+}
+
+/* Main content text */
+.main p, .main div, .main span {
+    color: var(--text-primary) !important;
+}
+
+/* Ensure all Streamlit widget labels are visible */
+[class*="st"] label {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+}
+
+/* Description text and help text */
+[class*="description"], [class*="Description"], [class*="help"], [class*="Help"] {
+    color: var(--grey-700) !important;
+}
+
+/* All text in containers */
+.element-container p,
+.element-container div,
+.element-container span {
+    color: var(--text-primary) !important;
+}
+
+/* Chart legend text - Make it visible */
+[class*="legend"] {
+    color: var(--text-primary) !important;
+}
+
+/* Ensure all text in success/info/warning boxes is visible */
+.stSuccess p, .stSuccess div, .stSuccess span,
+.stInfo p, .stInfo div, .stInfo span,
+.stWarning p, .stWarning div, .stWarning span,
+.stError p, .stError div, .stError span {
+    color: var(--text-primary) !important;
+}
+
+/* Force all text to be dark unless explicitly styled otherwise */
+/* Note: We use specific selectors instead of universal * to avoid conflicts */
+
+/* Override any light text colors */
+[style*="color: rgb"], [style*="color:#"] {
+    /* Let inline styles work, but ensure defaults are dark */
+}
+
+/* Specific fixes for common Streamlit elements */
+.stAlert, .stException {
+    color: var(--text-primary) !important;
+}
+
+/* Table text */
+.dataframe td, .dataframe th {
+    color: var(--text-primary) !important;
+}
+
+/* Ensure navigation text is always visible */
+.stRadio [role="radiogroup"] label {
+    color: var(--grey-700) !important;
+}
+
+.stRadio [role="radiogroup"] label:not(:has(input:checked)) {
+    color: var(--grey-700) !important;
+}
+
+.stRadio [role="radiogroup"] label:has(input:checked) {
+    color: var(--primary) !important;
+}
+
+/* Additional aggressive fixes for text visibility */
+.stApp * {
+    /* Ensure default text color is dark */
+}
+
+/* Override any light gray text colors */
+[style*="color: gray"], [style*="color:grey"], [style*="color: #9"], [style*="color: #f"], [style*="color: #e"] {
+    color: var(--grey-700) !important;
+}
+
+/* Ensure all Streamlit default text is dark */
+.stApp {
+    color: var(--text-primary);
+}
+
+/* Fix for any text that might be inheriting light colors */
+div, span, p, label, h1, h2, h3, h4, h5, h6 {
+    color: inherit;
+}
+
+/* But force dark for specific problematic areas */
+[data-testid="stSidebar"] * {
+    color: inherit;
+}
+
+[data-testid="stSidebar"] .stRadio label {
+    color: var(--grey-700) !important;
+}
+
+/* Main content area text */
+.main * {
+    color: inherit;
+}
+
+.main p, .main div:not([class*="plotly"]):not([class*="chart"]) {
+    color: var(--text-primary) !important;
+}
+

@@ -1,0 +1,242 @@
+# Virtual Testing Assistant - Full Stack Docker Compose
+# Production-ready multi-service deployment
+
+services:
+  # ============================================================================
+  # PostgreSQL + pgvector - Vector Database
+  # ============================================================================
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: vta-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vta}
+      POSTGRES_USER: ${POSTGRES_USER:-vta_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vta_password}
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-postgres.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vta_user} -d ${POSTGRES_DB:-vta}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - vta-network
+
+  # ============================================================================
+  # Neo4j - Knowledge Graph Database
+  # ============================================================================
+  neo4j:
+    image: neo4j:5.14-community
+    container_name: vta-neo4j
+    environment:
+      NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-vtapassword}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_apoc_export_file_enabled: 'true'
+      NEO4J_apoc_import_file_enabled: 'true'
+      NEO4J_apoc_import_file_use__neo4j__config: 'true'
+      NEO4J_dbms_memory_heap_initial__size: 512m
+      NEO4J_dbms_memory_heap_max__size: 2G
+      NEO4J_dbms_memory_pagecache_size: 1G
+    ports:
+      - "${NEO4J_BOLT_PORT:-7687}:7687"
+      - "${NEO4J_HTTP_PORT:-7474}:7474"
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+      - neo4j-import:/var/lib/neo4j/import
+      - neo4j-plugins:/plugins
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:7474 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - vta-network
+
+  # ============================================================================
+  # Redis - Caching Layer
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: vta-redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-vtaredis}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - vta-network
+
+  # ============================================================================
+  # VTA API - FastAPI Backend
+  # ============================================================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vta-api
+    environment:
+      # Database connections
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-vta}
+      POSTGRES_USER: ${POSTGRES_USER:-vta_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vta_password}
+      
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: ${NEO4J_USER:-neo4j}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-vtapassword}
+      
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-vtaredis}
+      
+      # Application settings
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      API_WORKERS: ${API_WORKERS:-4}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      
+      # LLM settings
+      USE_MOCK_LLM: ${USE_MOCK_LLM:-true}
+      
+      # Business settings
+      HOURLY_RATE_GBP: ${HOURLY_RATE_GBP:-75.0}
+      PHYSICAL_TEST_MULTIPLIER: ${PHYSICAL_TEST_MULTIPLIER:-1.0}
+      SIMULATION_COST_FACTOR: ${SIMULATION_COST_FACTOR:-0.05}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./src:/app/src:ro
+      - ./semantic:/app/semantic:ro
+      - vta-data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - vta-network
+    command: python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --workers ${API_WORKERS:-4}
+
+  # ============================================================================
+  # VTA Dashboard - Streamlit Frontend
+  # ============================================================================
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vta-dashboard
+    environment:
+      # API connection
+      API_BASE_URL: http://api:8000
+      
+      # Streamlit settings
+      STREAMLIT_SERVER_PORT: 8501
+      STREAMLIT_SERVER_ADDRESS: 0.0.0.0
+      STREAMLIT_BROWSER_GATHER_USAGE_STATS: 'false'
+      STREAMLIT_SERVER_HEADLESS: 'true'
+    ports:
+      - "${DASHBOARD_PORT:-8501}:8501"
+    volumes:
+      - ./src:/app/src:ro
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - vta-network
+    command: python -m streamlit run src/dashboard/app.py --server.port=8501 --server.address=0.0.0.0
+
+  # ============================================================================
+  # Data Initialization Service (Run once)
+  # ============================================================================
+  init-data:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vta-init
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-vta}
+      POSTGRES_USER: ${POSTGRES_USER:-vta_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vta_password}
+      
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: ${NEO4J_USER:-neo4j}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-vtapassword}
+    volumes:
+      - ./src:/app/src
+      - ./scripts:/app/scripts
+    depends_on:
+      postgres:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+    networks:
+      - vta-network
+    command: >
+      sh -c "
+        echo 'Generating test scenarios...' &&
+        python src/data/synthetic_data_generator.py &&
+        echo 'Initializing Neo4j...' &&
+        python scripts/run_phase2_ingestion.py &&
+        echo 'Data initialization complete!'
+      "
+    restart: "no"
+
+# ============================================================================
+# Volumes - Persistent Data Storage
+# ============================================================================
+volumes:
+  postgres-data:
+    name: vta-postgres-data
+  neo4j-data:
+    name: vta-neo4j-data
+  neo4j-logs:
+    name: vta-neo4j-logs
+  neo4j-import:
+    name: vta-neo4j-import
+  neo4j-plugins:
+    name: vta-neo4j-plugins
+  redis-data:
+    name: vta-redis-data
+  vta-data:
+    name: vta-app-data
+
+# ============================================================================
+# Networks - Internal Communication
+# ============================================================================
+networks:
+  vta-network:
+    name: vta-network
+    driver: bridge
+

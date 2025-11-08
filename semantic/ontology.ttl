@@ -1,0 +1,323 @@
+@prefix : <http://nissan-ntce.cranfield.ac.uk/vta/ontology#> .
+@prefix vta: <http://nissan-ntce.cranfield.ac.uk/vta/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<http://nissan-ntce.cranfield.ac.uk/vta/ontology>
+    a owl:Ontology ;
+    rdfs:label "Virtual Testing Assistant Ontology" ;
+    dcterms:description "Ontology for automotive testing scenarios, vehicles, components, and regulatory compliance" ;
+    dcterms:creator "Nissan NTCE & Cranfield University KTP" ;
+    owl:versionInfo "1.0" .
+
+#################################################################
+#    Classes
+#################################################################
+
+vta:Vehicle
+    a owl:Class ;
+    rdfs:label "Vehicle" ;
+    rdfs:comment "A vehicle model (e.g., Ariya, Leaf, Qashqai)" .
+
+vta:Platform
+    a owl:Class ;
+    rdfs:label "Platform" ;
+    rdfs:comment "A vehicle platform type: EV (Battery Electric), HEV (Hybrid Electric), or ICE (Internal Combustion Engine)" .
+
+vta:Component
+    a owl:Class ;
+    rdfs:label "Component" ;
+    rdfs:comment "A vehicle component such as motor, battery, sensor, or control unit" .
+
+vta:VehicleSystem
+    a owl:Class ;
+    rdfs:label "Vehicle System" ;
+    rdfs:comment "A major vehicle system: Powertrain, Battery, ADAS, Chassis, HVAC, Infotainment, Electrical, Body, or Thermal" .
+
+vta:TestScenario
+    a owl:Class ;
+    rdfs:label "Test Scenario" ;
+    rdfs:comment "A test scenario for validating vehicle performance, safety, durability, or compliance" .
+
+vta:RegulatoryStandard
+    a owl:Class ;
+    rdfs:label "Regulatory Standard" ;
+    rdfs:comment "A regulatory or certification standard (e.g., UNECE R100, ISO 26262, WLTP)" .
+
+vta:TestType
+    a owl:Class ;
+    rdfs:label "Test Type" ;
+    rdfs:comment "A category of test: performance, durability, safety, regulatory, ADAS, or emissions" .
+
+vta:Facility
+    a owl:Class ;
+    rdfs:label "Facility" ;
+    rdfs:comment "A testing facility: lab, test track, climatic chamber, EMC chamber, or proving ground" .
+
+vta:HistoricalTest
+    a owl:Class ;
+    rdfs:label "Historical Test" ;
+    rdfs:comment "A record of a past test execution with results" .
+
+vta:Team
+    a owl:Class ;
+    rdfs:label "Team" ;
+    rdfs:comment "An engineering team responsible for test execution" .
+
+vta:ODD
+    a owl:Class ;
+    rdfs:label "Operational Design Domain" ;
+    rdfs:comment "Operational Design Domain for ADAS/AV testing" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+vta:onPlatform
+    a owl:ObjectProperty ;
+    rdfs:label "on platform" ;
+    rdfs:comment "Links a vehicle to its platform type" ;
+    rdfs:domain vta:Vehicle ;
+    rdfs:range vta:Platform .
+
+vta:hasComponent
+    a owl:ObjectProperty ;
+    rdfs:label "has component" ;
+    rdfs:comment "Links a vehicle to a component it contains" ;
+    rdfs:domain vta:Vehicle ;
+    rdfs:range vta:Component .
+
+vta:belongsToSystem
+    a owl:ObjectProperty ;
+    rdfs:label "belongs to system" ;
+    rdfs:comment "Links a component to the system it belongs to" ;
+    rdfs:domain vta:Component ;
+    rdfs:range vta:VehicleSystem .
+
+vta:requiresTest
+    a owl:ObjectProperty ;
+    rdfs:label "requires test" ;
+    rdfs:comment "Links a vehicle to a required test scenario" ;
+    rdfs:domain vta:Vehicle ;
+    rdfs:range vta:TestScenario .
+
+vta:testsComponent
+    a owl:ObjectProperty ;
+    rdfs:label "tests component" ;
+    rdfs:comment "Links a test scenario to a component it validates" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:Component .
+
+vta:testsSystem
+    a owl:ObjectProperty ;
+    rdfs:label "tests system" ;
+    rdfs:comment "Links a test scenario to a system it validates" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:VehicleSystem .
+
+vta:followsStandard
+    a owl:ObjectProperty ;
+    rdfs:label "follows standard" ;
+    rdfs:comment "Links a test scenario to a regulatory standard it complies with" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:RegulatoryStandard .
+
+vta:isType
+    a owl:ObjectProperty ;
+    rdfs:label "is type" ;
+    rdfs:comment "Links a test scenario to its type category" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:TestType .
+
+vta:requiresFacility
+    a owl:ObjectProperty ;
+    rdfs:label "requires facility" ;
+    rdfs:comment "Links a test scenario to the facility type needed" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:Facility .
+
+vta:hasResult
+    a owl:ObjectProperty ;
+    rdfs:label "has result" ;
+    rdfs:comment "Links a test scenario to a historical execution result" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:HistoricalTest .
+
+vta:performedBy
+    a owl:ObjectProperty ;
+    rdfs:label "performed by" ;
+    rdfs:comment "Links a test scenario to the team that executed it" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:Team .
+
+vta:inODD
+    a owl:ObjectProperty ;
+    rdfs:label "in ODD" ;
+    rdfs:comment "Links a test scenario to its Operational Design Domain" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:ODD .
+
+vta:applicableTo
+    a owl:ObjectProperty ;
+    rdfs:label "applicable to" ;
+    rdfs:comment "Links a test scenario to a platform it applies to" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range vta:Platform .
+
+#################################################################
+#    Data Properties
+#################################################################
+
+vta:modelId
+    a owl:DatatypeProperty ;
+    rdfs:label "model ID" ;
+    rdfs:comment "Unique identifier for a vehicle model" ;
+    rdfs:domain vta:Vehicle ;
+    rdfs:range xsd:string .
+
+vta:testType
+    a owl:DatatypeProperty ;
+    rdfs:label "test type" ;
+    rdfs:comment "Type of test (performance, durability, safety, etc.)" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range xsd:string .
+
+vta:complexityScore
+    a owl:DatatypeProperty ;
+    rdfs:label "complexity score" ;
+    rdfs:comment "Test complexity score from 1 to 10" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range xsd:integer .
+
+vta:riskLevel
+    a owl:DatatypeProperty ;
+    rdfs:label "risk level" ;
+    rdfs:comment "Risk level: low, medium, high, or critical" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range xsd:string .
+
+vta:estimatedDuration
+    a owl:DatatypeProperty ;
+    rdfs:label "estimated duration" ;
+    rdfs:comment "Estimated test duration in hours" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range xsd:float .
+
+vta:estimatedCost
+    a owl:DatatypeProperty ;
+    rdfs:label "estimated cost" ;
+    rdfs:comment "Estimated test cost in GBP" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range xsd:float .
+
+vta:certificationRequired
+    a owl:DatatypeProperty ;
+    rdfs:label "certification required" ;
+    rdfs:comment "Whether certification is required for this test" ;
+    rdfs:domain vta:TestScenario ;
+    rdfs:range xsd:boolean .
+
+vta:criticality
+    a owl:DatatypeProperty ;
+    rdfs:label "criticality" ;
+    rdfs:comment "Component criticality: critical, high, medium, or low" ;
+    rdfs:domain vta:Component ;
+    rdfs:range xsd:string .
+
+vta:category
+    a owl:DatatypeProperty ;
+    rdfs:label "category" ;
+    rdfs:comment "Standard category: Safety, Emissions, Performance, Technical" ;
+    rdfs:domain vta:RegulatoryStandard ;
+    rdfs:range xsd:string .
+
+vta:platformType
+    a owl:DatatypeProperty ;
+    rdfs:label "platform type" ;
+    rdfs:comment "Platform type identifier: EV, HEV, or ICE" ;
+    rdfs:domain vta:Platform ;
+    rdfs:range xsd:string .
+
+vta:executionDate
+    a owl:DatatypeProperty ;
+    rdfs:label "execution date" ;
+    rdfs:comment "Date when test was executed" ;
+    rdfs:domain vta:HistoricalTest ;
+    rdfs:range xsd:date .
+
+vta:passed
+    a owl:DatatypeProperty ;
+    rdfs:label "passed" ;
+    rdfs:comment "Whether the test passed" ;
+    rdfs:domain vta:HistoricalTest ;
+    rdfs:range xsd:boolean .
+
+vta:fixHours
+    a owl:DatatypeProperty ;
+    rdfs:label "fix hours" ;
+    rdfs:comment "Hours required to fix failures" ;
+    rdfs:domain vta:HistoricalTest ;
+    rdfs:range xsd:float .
+
+#################################################################
+#    Individuals (Examples)
+#################################################################
+
+# Platform Individuals
+vta:EV_Platform
+    a vta:Platform ;
+    rdfs:label "EV Platform" ;
+    vta:platformType "EV" ;
+    rdfs:comment "Battery Electric Vehicle platform" .
+
+vta:HEV_Platform
+    a vta:Platform ;
+    rdfs:label "HEV Platform" ;
+    vta:platformType "HEV" ;
+    rdfs:comment "Hybrid Electric Vehicle platform" .
+
+vta:ICE_Platform
+    a vta:Platform ;
+    rdfs:label "ICE Platform" ;
+    vta:platformType "ICE" ;
+    rdfs:comment "Internal Combustion Engine platform" .
+
+# System Individuals
+vta:Powertrain_System
+    a vta:VehicleSystem ;
+    rdfs:label "Powertrain System" ;
+    rdfs:comment "Vehicle powertrain including motor/engine, transmission, and power electronics" .
+
+vta:Battery_System
+    a vta:VehicleSystem ;
+    rdfs:label "Battery System" ;
+    rdfs:comment "High-voltage battery system with BMS and thermal management" .
+
+vta:ADAS_System
+    a vta:VehicleSystem ;
+    rdfs:label "ADAS System" ;
+    rdfs:comment "Advanced Driver Assistance Systems including sensors and control units" .
+
+# Test Type Individuals
+vta:Performance_TestType
+    a vta:TestType ;
+    rdfs:label "Performance Test" ;
+    rdfs:comment "Tests validating vehicle performance characteristics" .
+
+vta:Safety_TestType
+    a vta:TestType ;
+    rdfs:label "Safety Test" ;
+    rdfs:comment "Tests validating vehicle safety systems and crash protection" .
+
+vta:Durability_TestType
+    a vta:TestType ;
+    rdfs:label "Durability Test" ;
+    rdfs:comment "Tests validating long-term durability and reliability" .
+
+#################################################################
+#    End of Ontology
+#################################################################
+

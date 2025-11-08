@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <route id="ego_route" edges="edge1 edge2 edge3 edge4 edge5"/>
+    <vehicle id="ego" type="ego_Ariya" route="ego_route" depart="0" departLane="best" departSpeed="max" color="0,255,0"/>
+    <flow id="traffic_flow" type="passenger_car" route="ego_route" begin="0" end="7200.0" vehsPerHour="0" departLane="best" departSpeed="max"/>
+</routes>

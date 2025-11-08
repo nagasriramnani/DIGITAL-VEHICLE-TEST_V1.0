@@ -1,0 +1,15 @@
+[theme]
+# ChatGPT-Style Dark Theme
+primaryColor = "#10a37f"  # ChatGPT green accent
+backgroundColor = "#343541"  # ChatGPT dark background
+secondaryBackgroundColor = "#40414f"  # ChatGPT secondary background
+textColor = "#ececf1"  # ChatGPT light text
+font = "sans serif"
+
+[server]
+headless = true
+port = 8501
+
+[browser]
+gatherUsageStats = false
+
